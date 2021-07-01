@@ -1,0 +1,50 @@
+/* Visions Styling, you may use your own to fit the design of your website */
+.vt-bg-primary {
+    background-color: #18243f !important;
+}
+.vt-bg-secondary {
+    background-color: #21bbee !important;
+}
+.vt-text-primary {
+    color: #18243f !important;
+}
+.vt-text-secondary {
+    color: #21bbee !important;
+}
+.vt-button-primary {
+    color: white !important;
+    background-color: #18243f !important;
+}
+.vt-button-primary:hover {
+    background-color: #21bbee !important;
+    color: black !important;
+}
+.vt-button-secondary {
+    color: white !important;
+    background-color: #21bbee !important;
+}
+.vt-button-secondary:hover {
+    background-color: #18243f !important;
+    color: white !important;
+}
+/* Modal */
+.modal-content {
+    border-radius: 25px;
+}
+.modal-header {
+    border-top-right-radius: 25px;
+    border-top-left-radius: 25px;
+}
+.modal-header button {
+    position: absolute;
+    right: 4%;
+}
+table {
+    border-radius: 8px !important;
+}
+tbody {
+    border-radius: 15px !important;
+}
+table,th,tr,td {
+    border: none !important;
+}
