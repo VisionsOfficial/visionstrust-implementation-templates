@@ -14,6 +14,13 @@ The template styling for the popup. These are non-mandatory and you may modify t
 ### ConsentPopups.js
 
 Frontend methods to load the popup and start the exchange process.
+- loadPopup: Loads the data for the exchange popup. -- [API-Docs](https://visionstrust.com/api-docs/#/Popups/post_popups_import)
+- startImportProcess: Gathers user data and calls the Visions endpoint to create the consent and start the exchange process. -- [API-Docs](https://visionstrust.com/api-docs/#/Consents/post_consents_exchange_import)
+- startExportProcess: Gathers user data and calls the Visions endpoint to create the consent and start the exchange process. -- [API-Docs](https://visionstrust.com/api-docs/#/Consents/post_consents_exchange_export)
+
+Note on the export process :
+
+In the case that the User does not have an account in the import service, you will receive an URL to redirect the User to the import service registration page after launching the export process. It is the Import service that will, after registering the new User, re-enable the exchange process for the data exchange to take place.
 
 ***
 ## Note on the generation of JWT from the frontend: 
