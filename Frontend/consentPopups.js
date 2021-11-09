@@ -42,7 +42,7 @@ let datatypeIds = null,
 const loadPopup = (flow) => {
 
     let checkboxes = [];
-    datatypesIds   = [];
+    datatypeIds   = [];
     checkboxIds    = [];
     services       = [];
 
@@ -168,7 +168,7 @@ const loadPopup = (flow) => {
             if(data.exportServices.length > 0) {
                 for(let service of data.exportServices) {
                     if(service.termsOfUse)
-                        terms += `<a class="dropdown-item" href="${s.termsOfUse}">${s.serviceName}</a>`;
+                        terms += `<a class="dropdown-item" href="${service.termsOfUse}">${service.serviceName}</a>`;
                 }
             }
         } else {
@@ -192,7 +192,7 @@ const loadPopup = (flow) => {
         }
 
         for (let i = 0; i < datatypes.length; i++) {
-            if(datatype.checked === true) {
+            if(datatypes[i].checked === true) {
                 $("#" + checkboxes[i]).bootstrapToggle("on");
             } else {
                 $("#" + checkboxes[i]).bootstrapToggle("off");
