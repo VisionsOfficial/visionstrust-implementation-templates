@@ -14,8 +14,7 @@ This github holds templates for both frontend and backend code to help you with 
 ## Contact
 
 If you have any questions, feel free to contact any of the following : 
-- Felix Bole (Developer) - <felix@visionspol.eu>
-- Quentin Fournival (Developer) - <quentin@visionspol.eu>
+- Felix Bole (Lead Developer) - <felix@visionspol.eu>
 - Matthias De Bièvre (Visions CEO) - <matthias@visionspol.eu>
 
 <br/>
