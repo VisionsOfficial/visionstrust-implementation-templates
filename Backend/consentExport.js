@@ -1,10 +1,13 @@
-const {SERVICE_KEY, SERVICE_SECRET_KEY, API_BASE_URL} = require('./config/config');
+const {
+  SERVICE_KEY,
+  SERVICE_SECRET_KEY,
+  API_BASE_URL,
+} = require("./config/config");
 const auth = require("./utils/auth"); // For generation of a JWT for authentication with the Visionstrust API
 
 const fs = require("fs");
-const request = require("request");//Package for making requests, you can also use axios or node-fetch
+const request = require("request"); //Package for making requests, you can also use axios or node-fetch
 const crypto = require("crypto"); //NodeJs package for encryption
-
 
 /**
  * Generates an access token to send back to Visions
@@ -14,10 +17,8 @@ const crypto = require("crypto"); //NodeJs package for encryption
  */
 
 app.post("/consent/export", async function (req, res, next) {
-
   // Request body validation
   if (req.body.signedConsent) {
-
     // Retrieve public key used for consent decryption
     const publicKeyFromFile = fs
       .readFileSync("./config/rsa-encrypt-public.pem")
@@ -30,7 +31,7 @@ app.post("/consent/export", async function (req, res, next) {
         key: publicKey,
         padding: crypto.constants.RSA_PKCS1_PADDING,
       },
-      Buffer.from(req.body.signedConsent,'base64')
+      Buffer.from(req.body.signedConsent, "base64")
     );
 
     decryptedData = JSON.parse(decryptedData.toString());
@@ -39,39 +40,40 @@ app.post("/consent/export", async function (req, res, next) {
       let originalConsent = decryptedData;
 
       // Generate access token
-      const token = generateAccessToken()
+      const token = generateAccessToken();
 
       const consentId = originalConsent.consentId;
 
       // Send the token to visions
       request.post(
         {
-          url: API_BASE_URL + "/consents/token",
-          headers: { "Authorization": "Bearer " + auth.getJwtToken(SERVICE_KEY, SERVICE_SECRET_KEY) },
-          form: {
+          url: API_BASE_URL + "/consents/exchange/token",
+          headers: {
+            Authorization:
+              "Bearer " + auth.getJwtToken(SERVICE_KEY, SERVICE_SECRET_KEY),
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
             token: token,
             consentId: consentId,
-          },
+          }),
         },
         function (err, response, body) {
           // Do stuff in the callback if you wish
         }
       );
     } else {
-      res
-        .status(404)
-        .json({ 
-          error: "consent-decryption-error", 
-          message: "Something went wrong when decrypting the signed consent." 
-        });
+      res.status(404).json({
+        error: "consent-decryption-error",
+        message: "Something went wrong when decrypting the signed consent.",
+      });
     }
   }
 });
 
-
 /**
  * Evidently, you may use any type of token generation method that suits your needs
- * 
+ *
  * @returns {string} The access token
  */
 function generateAccessToken() {
