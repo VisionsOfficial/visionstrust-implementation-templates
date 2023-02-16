@@ -1,4 +1,8 @@
-const {SERVICE_KEY, SERVICE_SECRET_KEY, API_BASE_URL} = require('./config/config');
+const {
+  SERVICE_KEY,
+  SERVICE_SECRET_KEY,
+  API_BASE_URL,
+} = require("./config/config");
 const auth = require("./utils/auth"); // For generation of a JWT for authentication with the Visionstrust API
 
 const fs = require("fs");
@@ -13,7 +17,6 @@ const crypto = require("crypto");
  * Original Authors: Felix Bole
  */
 app.post("/data/export", async function (req, res) {
-
   // Retrieve public key for consent decryption
   const publicKeyFromFile = fs
     .readFileSync("./config/rsa-encrypt-public.pem")
@@ -26,25 +29,27 @@ app.post("/data/export", async function (req, res) {
       key: publicKey,
       padding: crypto.constants.RSA_PKCS1_PADDING,
     },
-    Buffer.from(req.body.signedConsent,'base64')
+    Buffer.from(req.body.signedConsent, "base64")
   );
 
   decryptedData = JSON.parse(decryptedData.toString());
 
   if (decryptedData) {
-
     const consentId = decryptedData.consentId;
     const token = decryptedData.token;
     const serviceName = decryptedData.serviceExportName;
 
     request.post(
       {
-        url: API_BASE_URL + "/consents/verify/",
-        headers: { "x-auth-token": auth.getJwtToken(SERVICE_KEY, SERVICE_SECRET_KEY) },
-        form: {
-          consentId: consentId,
-          token: token,
+        url: API_BASE_URL + "/consents/exchange/validate",
+        headers: {
+          Authorization:
+            "Bearer " + auth.getJwtToken(SERVICE_KEY, SERVICE_SECRET_KEY),
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          consentId: consentId,
+        }),
       },
       function (err, response, body) {
         if (!err) {
@@ -58,24 +63,28 @@ app.post("/data/export", async function (req, res) {
             }
 
             // Get datatypes from your database and send them to the IMPORT SERVICE
-            getData(body.userExport.userServiceId, body.datatypes).then((data) => {
-              request.post(
-                {
-                  url: req.body.dataImportUrl,
-                  form: {
-                    success: true,
-                    data: data,
-                    user: body.userImport.userServiceId,
-                    service: serviceName,
+            getData(body.userExport.userServiceId, body.datatypes).then(
+              (data) => {
+                request.post(
+                  {
+                    url: req.body.dataImportUrl,
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      data: data,
+                      user: body.userImport.userServiceId,
+                      signedConsent: req.body.signedConsent,
+                    }),
                   },
-                },
-                function (error, response1, body1) {
-                  // Do something with the request callback
-                }
-              );
-            });
+                  function (error, response1, body1) {
+                    // Do something with the request callback
+                  }
+                );
+              }
+            );
           } else {
-            // Do something 
+            // Do something
           }
         } else {
           // Error
@@ -95,4 +104,3 @@ app.post("/data/export", async function (req, res) {
 function getData(userId, datatypes) {
   // Retrieve data from your database for this userId and the specified datatypes
 }
-
