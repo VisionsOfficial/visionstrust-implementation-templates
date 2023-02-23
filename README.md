@@ -5,7 +5,7 @@
 This github holds templates for both frontend and backend code to help you with your implementation of our tool.
 
 ## Useful links
-- [Latest Documentation](https://docs.google.com/document/d/1rkPIGh-8Hi0yhKiJLNxMp5mf9jCzWGmHbTMFoCgQbUs/edit?usp=sharing)
+- [Latest Documentation](https://visionstrust.com/public/docs)
 - [API Documentation (OAS3)](https://visionstrust.com/api-docs)
 - [VisionsTrust Web Platform](https://visionstrust.com)
 
