@@ -1,0 +1,9 @@
+dist
+node_modules
+*/**/node_modules
+*/**/README.md
+README.md
+tests
+bin
+git-hooks
+pnpm-lock.yaml
