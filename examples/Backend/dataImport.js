@@ -4,6 +4,6 @@
  * Copyright Visions 2021
  * Original Authors: Felix Bole
  */
-app.post("/data/import", async (req, res) => {
-  // Process the data received
-});
+function dataImport(req, res) {
+    // Process the data received
+}
